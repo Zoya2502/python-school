@@ -1,0 +1,315 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #1e1e1e;
+    color: #d4d4d4;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+a { text-decoration: none; color: inherit; }
+
+/* Навигация */
+nav {
+    background-color: #252526;
+    padding: 15px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    border-bottom: 1px solid #333;
+    flex-shrink: 0;
+}
+nav a { color: #fff; font-weight: 500; transition: 0.2s; }
+nav a:hover { color: #4ec9b0; }
+.nav-btn { background: #0e639c; color: white; border: none; padding: 6px 12px; cursor: pointer; border-radius: 4px; font-family: inherit;}
+
+/* Главное меню */
+.main-menu { text-align: center; margin-top: 10vh; }
+.menu-buttons { 
+    display: flex;
+    justify-content: center;
+    gap: 30px; 
+    margin-top: 40px;
+    margin-bottom: 30px;
+}
+.menu-buttons .btn {
+    font-size: 1.2rem;
+    padding: 20px 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    transition: transform 0.2s;
+}
+.menu-buttons .btn:hover { transform: scale(1.05); }
+
+/* Сетка задач */
+.task-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 30px;
+    overflow-y: auto;
+}
+.task-card {
+    background: #252526;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #333;
+    transition: 0.2s;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+}
+.task-card:hover { 
+    background: #2d2d30; 
+    border-color: #007bff; 
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+.task-card.solved { border-left: 5px solid #28a745; }
+.task-card.in-progress { border-left: 5px solid #ffc107; }
+
+/* Рабочая область */
+.workspace { display: flex; flex-direction: column; height: 100%; overflow: hidden; }
+
+.task-description { 
+    background: #1e1e1e; 
+    padding: 20px 30px; 
+    border-bottom: 1px solid #333;
+    height: auto;
+    max-height: 35vh; 
+    overflow-y: auto; 
+    flex-shrink: 0;
+    font-size: 16px;
+    line-height: 1.6;
+}
+.task-description h2 { margin-top: 0; color: #4ec9b0; margin-bottom: 15px; }
+
+.editor-container { flex-grow: 1; position: relative; }
+#editor { position: absolute; top: 0; bottom: 0; left: 0; right: 0; font-size: 16px; }
+
+.controls { padding: 15px; background: #252526; display: flex; gap: 15px; border-top: 1px solid #333; flex-shrink: 0; }
+.console { 
+    height: 25%; background: #111; color: #cccccc; padding: 15px; 
+    font-family: 'Consolas', monospace; overflow-y: auto; 
+    border-top: 1px solid #333; flex-shrink: 0; 
+}
+
+/* Кнопки */
+.btn { padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; color: white; font-weight: 500; font-size: 14px; text-decoration: none; display: inline-block;}
+.btn.run { background-color: #28a745; }
+.btn.run:hover { background-color: #218838; }
+.btn.check { background-color: #ffc107; color: #212529; }
+.btn.check:hover { background-color: #e0a800; }
+.btn.next { background-color: #17a2b8; }
+.btn.secondary { background-color: #6c757d; }
+.btn.hint { background-color: #6610f2; }
+.btn.hint:hover { background-color: #520dc2; }
+.btn.danger { background-color: #dc3545; }
+
+/* --- НОВЫЙ ДИЗАЙН МОДАЛЬНОГО ОКНА --- */
+.modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); backdrop-filter: blur(4px); }
+.modal-content { 
+    background-color: #1e1e1e; 
+    margin: 2vh auto; 
+    width: 95%; 
+    height: 90%; 
+    border-radius: 10px; 
+    display: flex; 
+    flex-direction: column; 
+    border: 1px solid #444; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    overflow: hidden; 
+}
+.modal-header {
+    padding: 15px 20px;
+    background: #252526;
+    border-bottom: 1px solid #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.modal-header h2 { margin: 0; color: #eee; font-size: 1.2rem; }
+.close { color: #aaa; font-size: 28px; cursor: pointer; line-height: 20px; }
+.close:hover { color: #fff; }
+
+.modal-body { display: flex; flex-grow: 1; overflow: hidden; }
+
+/* Боковая панель (Стильная) */
+.modal-sidebar { 
+    width: 280px; 
+    background: #181818; 
+    overflow-y: auto; 
+    border-right: 1px solid #333; 
+    display: flex;
+    flex-direction: column;
+    padding-top: 10px;
+}
+
+.modal-tab { 
+    padding: 12px 20px; 
+    cursor: pointer; 
+    color: #888; 
+    font-size: 14px; 
+    border-left: 3px solid transparent;
+    transition: all 0.2s;
+}
+
+.modal-tab:hover { 
+    background: #222; 
+    color: #ccc; 
+}
+
+/* Активная вкладка */
+.modal-tab.active { 
+    background: #252526; 
+    color: #fff; 
+    border-left-color: #007bff;
+    font-weight: 500;
+}
+
+/* Область текста */
+.modal-text { 
+    flex-grow: 1; 
+    padding: 0; 
+    overflow-y: auto; 
+    background: #1e1e1e; 
+}
+
+/* Контент справочника */
+.manual-block { 
+    padding: 40px; 
+    max-width: 800px; 
+    margin: 0 auto; 
+}
+
+.manual-block h3 {
+    color: #4ec9b0;
+    border-bottom: 1px solid #333;
+    padding-bottom: 8px;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    font-size: 1.4em;
+}
+.manual-block h3:first-child { margin-top: 0; }
+
+.manual-block p { line-height: 1.7; color: #d4d4d4; margin-bottom: 15px; font-size: 1.05em; }
+
+.manual-block pre {
+    background: #111;
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid #333;
+    overflow-x: auto;
+    color: #9cdcfe;
+    font-family: 'Consolas', monospace;
+    margin-bottom: 20px;
+    font-size: 0.95em;
+}
+
+.manual-block code {
+    background: #2d2d2d;
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: #ce9178;
+    font-family: 'Consolas', monospace;
+    font-size: 0.9em;
+}
+
+.manual-block ul { margin-bottom: 20px; padding-left: 20px; }
+.manual-block li { margin-bottom: 8px; color: #ccc; }
+
+.manual-block .note {
+    background: #252526;
+    border-left: 4px solid #ffc107;
+    padding: 15px;
+    margin: 20px 0;
+    color: #e0e0e0;
+}
+
+/* --- СТИЛИ ДЛЯ СТРАНИЦЫ /MATERIALS --- */
+
+/* Контейнер на всю оставшуюся высоту под шапкой */
+.materials-page-container {
+    display: flex;
+    flex-grow: 1; /* Занимает все место */
+    height: calc(100vh - 54px); /* Высота экрана минус высота навбара */
+    overflow: hidden; /* Скроллим только контент, а не всю страницу */
+}
+
+/* Левая колонка */
+.page-sidebar {
+    width: 320px; /* Фиксированная ширина */
+    background-color: #1e1e1e; /* Темный фон, но чуть светлее body */
+    border-right: 1px solid #333;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+}
+
+.sidebar-header {
+    padding: 20px;
+    font-size: 1.1rem;
+    color: #888;
+    border-bottom: 1px solid #333;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.sidebar-list {
+    overflow-y: auto; /* Скролл только списка тем */
+    flex-grow: 1;
+    padding-bottom: 20px;
+}
+
+/* Кнопка темы */
+.sidebar-item {
+    padding: 15px 20px;
+    cursor: pointer;
+    border-bottom: 1px solid #2a2a2a;
+    color: #ccc;
+    font-size: 15px;
+    transition: background 0.2s, padding-left 0.2s;
+    display: block; /* Гарантирует блочное отображение без точек */
+}
+
+.sidebar-item:hover {
+    background-color: #2a2d2e;
+    color: #fff;
+    padding-left: 25px; /* Эффект сдвига при наведении */
+}
+
+.sidebar-item.active {
+    background-color: #094771; /* Синий фон активного элемента (стиль VS Code) */
+    color: #fff;
+    border-left: 4px solid #4ec9b0; /* Цветная полоска слева */
+}
+
+/* Правая колонка */
+.page-content {
+    flex-grow: 1;
+    background-color: #1e1e1e;
+    overflow-y: auto; /* Скролл текста */
+    padding: 0;
+}
+
+/* Заголовки внутри текста */
+.page-content h1 {
+    margin-top: 0;
+    font-size: 2.2rem;
+    color: #4ec9b0;
+    border-bottom: 1px solid #333;
+    padding-bottom: 15px;
+    margin-bottom: 30px;
+}
+
+/* --- ОБЩИЕ СТИЛИ ДЛЯ ТЕКСТА (ДУБЛИРУЕМ ДЛЯ НАДЕЖНОСТИ) --- */
+.manual-block { 
+    padding: 50px; 
+    max-width: 900px; 
+    margin: 0 auto; 
+}
+.manual-block h3 { color: #569cd6; margin-top: 40px; margin-bottom: 15px; font-size: 1.5rem; border-bottom: 1px solid #333; padding-bottom: 5px; }
+.manual-block p, .manual-block li { font-size: 1.1rem; line-height: 1.7; color: #d4d4d4; }
+.manual-block pre { background: #111; padding: 20px; border: 1px solid #444; border-radius: 6px; overflow-x: auto; margin: 20px 0; }
+.manual-block code { font-family: 'Consolas', monospace; color: #ce9178; }
